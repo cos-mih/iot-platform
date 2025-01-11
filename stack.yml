@@ -31,6 +31,8 @@ services:
     depends_on:
       - db
       - broker
+    environment:
+      - DEBUG_DATA_FLOW=${DEBUG_DATA_FLOW}
     networks:
       - mqtt-messaging
       - db-update
@@ -44,9 +46,12 @@ services:
       - db
     volumes:
       - ./provisioning:/etc/grafana/provisioning
+      - ./grafana.ini:/var/lib/grafana/grafana.ini
       - type: bind
         source: ${SCD_DVP}/grafana
         target: /var/lib/grafana
+    environment:
+      - GF_PATHS_CONFIG=/var/lib/grafana/grafana.ini
     networks:
       - visualization
 

@@ -2,12 +2,15 @@ import paho.mqtt.client as mqtt
 from influxdb import InfluxDBClient
 import json
 import datetime
+import os
 
 subscribed_topic = '#'
 broker = 'broker'
 
 db_name = 'io_data'
 db_client = InfluxDBClient(host='db', port=8086, database=db_name)
+
+logg = os.getenv('DEBUG_DATA_FLOW')
 
 def on_connect(client, userdata, flags, reason_code, properties):
     client.subscribe(subscribed_topic)
@@ -17,15 +20,16 @@ def on_message(client, userdata, msg):
     location = msg.topic.split('/')[0]
     station = msg.topic.split('/')[1]
     json_data = json.loads(msg.payload)
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log_ts = 'NOW'
     if 'timestamp' in json_data:
         iso_timestamp = datetime.datetime.fromisoformat(json_data['timestamp'])
-        timestamp = iso_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = iso_timestamp.strftime('%Y-%m-%d %H:%M:%S')
         log_ts = json_data['timestamp']
 
-    print(f'\n{timestamp} Received a message by topic [{msg.topic}]')
-    print(f'{timestamp} Data timestamp is: {log_ts}')
+    if logg == 'true':
+        print(f'\n{timestamp} Received a message by topic [{msg.topic}]')
+        print(f'{timestamp} Data timestamp is: {log_ts}')
 
     for parameter, value in json_data.items():
         if isinstance(value, (int, float)):
@@ -46,7 +50,8 @@ def on_message(client, userdata, msg):
             ]
             db_client.write_points(json_body)
 
-            print(f'{timestamp} {series} {value}')
+            if logg == 'true':
+                print(f'{timestamp} {series} {value}')
 
 
 
