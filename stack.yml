@@ -39,20 +39,16 @@ services:
     image: grafana/grafana:latest
     restart: on-failure
     ports:
-      - '80:80'
+      - '80:3000'
     depends_on:
       - db
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - type: bind
+        source: ${SCD_DVP}/grafana
+        target: /var/lib/grafana
     networks:
       - visualization
-
-
-# volumes:
-#   db_data:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       device: ${SCD_DVP}
-#       o: bind
 
 networks:
   mqtt-messaging:

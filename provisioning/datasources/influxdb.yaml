@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB_database
+    type: influxdb
+    access: proxy
+    url: http://db:8086
+    isDefault: true
+    database: io_data

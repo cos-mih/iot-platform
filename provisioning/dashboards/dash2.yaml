@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'Dashboard 2'
+    folder: ''
+    disableDeletion: false
+    allowUiUpdates: true
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/dashboard2.json
+       

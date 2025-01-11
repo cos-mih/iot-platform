@@ -35,7 +35,8 @@ def on_message(client, userdata, msg):
                     'measurement': series,
                     'tags': {
                         'location': location,
-                        'station': station
+                        'station': station,
+                        'parameter': parameter
                     },
                     'fields': {
                         'value': value
