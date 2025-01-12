@@ -1,0 +1,32 @@
+IoT Platform using Microservices
+
+This project implements a simple IoT service which allows visualisation of data acquired from a
+system of IoT devices, that send data through the MQTT protocol to a microservice, data that is
+further used to generate relevant Grafana dashboards.
+
+The components (microservices) implemented are:
+- broker: MQTT broker that receives messages from the IoT devices and sends them to the database
+          adaptor; 
+- db: InfluxDB v1 database, used to persist IoT data; v1 is used in order to be able to use the
+      database without authentification;
+- adaptor: Python program that connects to the MQTT broker, receives the data from the IoT devices
+           and extracts the numerical data to then add it into the database in the required form;
+- dashboard: Grafana container exposing the default HTTP 80 port, that allows the 
+             'asistent:grafanaSCD2024' user to access 2 pre-made dashboards from a browser at 
+             localhost:80, edit and persist the changes.
+
+These microservices are defined in the stack.yaml file. DB and Dashboard have docker volumes defined
+in order to keep their data persistent across multiple runs of the service. Broker and Dashboard also
+have bind volumes that allows them to use the configuration files defined locally, respectively 
+mosquitto.conf, for config info related to the MQTT roker service, and the provisioning folder, 
+containing grafana dashboard configurations, influxdb connection info, and admin user configuration
+in config.ini. The dashboard config json files have been generated from the Grafana UI, after manually
+creating the dashboards.
+
+The adaptor is built using a Dockerfile, from the adaptor.py code. The rest of the microservices use
+a official Docker image from DockerHub.
+
+The run.sh script handles the run of all the microservices in a Docker Swarm, assuming the machine it
+runs on is already part of a swarm. If the environment variable indicating the path where Docker volumes
+should be mounted (SCD_DVP) is not set, it is set to a default value in the script, new permissions are
+set on the indicated path
