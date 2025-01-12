@@ -31,8 +31,7 @@ services:
     depends_on:
       - db
       - broker
-    environment:
-      - DEBUG_DATA_FLOW=${DEBUG_DATA_FLOW}
+    env_file: ./.env
     networks:
       - mqtt-messaging
       - db-update

@@ -3,4 +3,4 @@ COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 WORKDIR /app
 COPY adaptor.py .
-CMD ["python", "adaptor.py"]
+CMD ["python", "-u", "adaptor.py"]

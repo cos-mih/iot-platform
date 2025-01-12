@@ -29,7 +29,7 @@ class SensorData:
 
 def main():
     client = mqtt.Client()
-    client.connect("172.18.128.1")
+    client.connect("localhost")
     client.loop_start()
 
     bat_range = range(25, 101)

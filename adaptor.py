@@ -56,6 +56,7 @@ def on_message(client, userdata, msg):
 
 
 if __name__=='__main__':
+    print(logg)
     db_client.create_database(db_name)
     db_client.create_retention_policy(name='forever_policy', database=db_name, duration='INF', default=True, replication=2)
 

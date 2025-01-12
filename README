@@ -28,5 +28,6 @@ a official Docker image from DockerHub.
 
 The run.sh script handles the run of all the microservices in a Docker Swarm, assuming the machine it
 runs on is already part of a swarm. If the environment variable indicating the path where Docker volumes
-should be mounted (SCD_DVP) is not set, it is set to a default value in the script, new permissions are
-set on the indicated path
+should be mounted (SCD_DVP) is not set, it is set to a default value in the script. The adaptor image is
+built from the Dockerfile in the current directory, then pulls all needed docker images from DockerHub,
+and then deploys the 'scd3' stack containing all the microservices.
