@@ -20,7 +20,7 @@ services:
     volumes:
       - type: bind
         source: ${SCD_DVP}/influxdb
-        target: /var/lib/influxdb
+        target: /var/lib/influxdb:rw
     networks:
       - visualization
       - db-update
@@ -48,7 +48,7 @@ services:
       - ./provisioning:/etc/grafana/provisioning
       - type: bind
         source: ${SCD_DVP}/grafana
-        target: /var/lib/grafana
+        target: /var/lib/grafana:rw
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/provisioning/config.ini
     networks:
